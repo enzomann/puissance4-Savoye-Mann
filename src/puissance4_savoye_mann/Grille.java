@@ -81,7 +81,12 @@ public class Grille {
         }
     }
     public String lireCouleurDuJeton(int l, int c){
-        return Cellules[l][c].jetonCourant.Couleur;    
+        if (celluleOccupee(l,c)){// on verifie que la cellule est bien occupee par un jeton
+            return Cellules[l][c].jetonCourant.Couleur; 
+        }
+        else {
+            return "pas de couleur";// si la cellule n'est pas occupee par un jeton il n'y a donc pas de couleur(cela me servira pour la fonction etregagnant)
+        }
     }
     public boolean etreGagnantePourJoueur(Joueur joueur){
         int cpt;// compte le nombre de  jeton de la couleur du joueur    
@@ -90,6 +95,7 @@ public class Grille {
         for (int j=0; j<7; j++){
             cpt=0;// on initialise le compteur à 0 sur chaque colonne
             for (int i=0; i<6;i++){ 
+             
                 if (lireCouleurDuJeton(i,j).equals(joueur.Couleur)){
                     cpt++;
                     if (cpt>=4){// des que le compteur depasse 4 on rentre dans le if
