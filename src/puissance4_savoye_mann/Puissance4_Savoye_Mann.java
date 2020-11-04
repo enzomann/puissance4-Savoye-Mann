@@ -15,7 +15,8 @@ public class Puissance4_Savoye_Mann {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Partie nouvellepartie = new Partie();
+        nouvellepartie.debuterPartie();
     }
     
 }
