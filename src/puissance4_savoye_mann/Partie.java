@@ -127,6 +127,7 @@ public class Partie {
             Grillejeu.afficherGrilleSurConsole();// on affiche maintenant la grille 
         }
         
+        
     }
     
 }

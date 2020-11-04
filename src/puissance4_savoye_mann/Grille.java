@@ -21,14 +21,20 @@ public class Grille {
     }
     public boolean ajouterJetonDansColonne(Jeton jeton, int colonne){
         int i=0;
-        while (i<6 && Cellules[i][colonne].jetonCourant==null){ 
+        while (i<5 && Cellules[i][colonne].jetonCourant==null){ 
             i++;  // i augmente de 1 si la cellule est vide cela signifie que l'on descend de 1 dans la colonne 
         }
         if (i==0) {
             return false;// car cela signifie que la colonne est pleine
         }
         else {
-            Cellules[i][colonne].jetonCourant=jeton;
+            if (Cellules[i][colonne].jetonCourant==null){    
+                Cellules[i][colonne].jetonCourant=jeton;
+            }
+            else {
+                i--;
+                Cellules[i][colonne].jetonCourant=jeton;
+            }
             return true;
         }
     }
