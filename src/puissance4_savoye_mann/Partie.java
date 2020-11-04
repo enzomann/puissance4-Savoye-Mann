@@ -47,6 +47,7 @@ public class Partie {
         Joueur j2 = new Joueur(nom2);
         ListeJoueurs[0]=j1;// on affecte J1 etJ2 au tableau
         ListeJoueurs[1]=j2;
+        attribuerCouleursAuxJoueurs();
         // placons les trou noirs et desintegrateurs
         Random r = new Random();
         for (int t=0;t<2;t++){// on va placer les 2 desintegrateurs et 2 trou noirs qui sont ensemble

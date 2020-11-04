@@ -47,6 +47,7 @@ public class Joueur {
         }
     }
     public Jeton recupererJeton(){
-        return ListeJetons[nombreJetons_restants--];
+        nombreJetons_restants--;// on decremente nombre de jetons avant le return car si il retse 21 jetons ce sera la case 2à du tableau
+        return ListeJetons[nombreJetons_restants];
     }
 }
