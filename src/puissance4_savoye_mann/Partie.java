@@ -108,16 +108,54 @@ public class Partie {
             joueurCourant=ListeJoueurs[1];
         }
         while (Grillejeu.etreGagnantePourJoueur(ListeJoueurs[0])==false && Grillejeu.etreGagnantePourJoueur(ListeJoueurs[1])==false && ListeJoueurs[1].nombreJetons_restants!=0 && Grillejeu.etreRemplie()==false){// tant que aucun des joueurs n'a gagne ou que le joueur qui a commence en deuxieme a encore des jetons ou que la grille n'est pas rempli on reste dans la boucle
-            int j;
-            do {
             Scanner sc;
+            int choix;
+            do{
             sc = new Scanner(System.in);
-            System.out.println("tapez le numero de la  colonne que vous voulez choisir sachant que la colonne de gauche est 0");
-            j=sc.nextInt();//
-            }while(Grillejeu.colonneRemplie(j));//on verifit si cette colonne est pleine et tant que la colonne choisit est pleine on demande a l'utilisateur de changer de colonne
-            // on ajoute ensuite le jeton dans la colonne
-            Grillejeu.ajouterJetonDansColonne(joueurCourant.recupererJeton(), j);
+            System.out.println("tapez 1 si vous souhaitez jouer un jeton, tapez 2 si vous souhaitez récuperer un jeton et tapez 3 si vous souhaitez désintegrer un jeton");
+            choix=sc.nextInt();
+            if (choix==3){
+                if (joueurCourant.nombreDesintegrateurs==0){
+                    System.out.println("veuillez choisir une autre action vous n'avez plus de desintegrateur");
+                    choix=4;// choix prend une autre valeur pour refaire un tour de boucle
+                }
+            } 
+            }while(choix!=1 || choix!=2 || choix!=3);
             
+            switch(choix){
+                
+                case 1:
+                    int j;
+                    do {
+                    sc = new Scanner(System.in);
+                    System.out.println("tapez le numero de la  colonne que vous voulez choisir sachant que la colonne de gauche est 0");
+                    j=sc.nextInt();//
+                    }while(Grillejeu.colonneRemplie(j));//on verifit si cette colonne est pleine et tant que la colonne choisit est pleine on demande a l'utilisateur de changer de colonne
+                    // on ajoute ensuite le jeton dans la colonne
+                    Grillejeu.ajouterJetonDansColonne(joueurCourant.recupererJeton(), j);
+                    break;
+                
+                case 2 :
+                    int c;//pour referencer la colonne
+                    int l;//pour referencer la ligne
+                
+                    sc = new Scanner(System.in);
+                    System.out.println("tapez la ligne du jeton que vous voulez récupérer la premiere ligne est à 0, et la derniere est 5");
+                    l=sc.nextInt();// on recupere la ligne
+                
+                    sc = new Scanner(System.in);
+                    System.out.println("tapez la colonne du jeton que vous voulez récupérer la premiere colonne est à 0, et la derniere est 6");
+                    c=sc.nextInt();// on recupere la colonne
+                    
+                    Grillejeu.recupererJeton(l,c);// on recupere 
+                    Grillejeu.tasserGrille(c);// on oublie pas de tasser la grille
+                    break;
+                
+                case 3 :
+                    
+                
+            }
+            // on change le joueur courant
             if (joueurCourant==ListeJoueurs[0]){
                 joueurCourant=ListeJoueurs[1];
             }
@@ -125,6 +163,7 @@ public class Partie {
                 joueurCourant=ListeJoueurs[0];
             }
             Grillejeu.afficherGrilleSurConsole();// on affiche maintenant la grille 
+            
         }
         
         

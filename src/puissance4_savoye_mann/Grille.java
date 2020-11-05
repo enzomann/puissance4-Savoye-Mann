@@ -21,19 +21,21 @@ public class Grille {
     }
     public boolean ajouterJetonDansColonne(Jeton jeton, int colonne){
         int i=0;
-        while (i<5 && Cellules[i][colonne].jetonCourant==null){ 
-            i++;  // i augmente de 1 si la cellule est vide cela signifie que l'on descend de 1 dans la colonne 
+        while (i<6 && Cellules[i][colonne].jetonCourant==null){ 
+            i++; // i augmente de 1 si la cellule est vide cela signifie que l'on descend de 1 dans la colonne 
         }
         if (i==0) {
             return false;// car cela signifie que la colonne est pleine
         }
         else {
-            if (Cellules[i][colonne].jetonCourant==null){    
-                Cellules[i][colonne].jetonCourant=jeton;
+            i--;// on revient sur cellule du dessus car lorsque l'on sort de la boucle cela veut dire que la cellule du i actuel est soit occupee soit i a depacer la grille.
+            Cellules[i][colonne].jetonCourant=jeton;
+            if (presenceTrouNoir(i,colonne)){ // pour le 1.1
+                Cellules[i][colonne].activerTrouNoir(); //pour le 1.1
             }
-            else {
-                i--;
-                Cellules[i][colonne].jetonCourant=jeton;
+            if (presenceDesintegrateur(i,colonne)){// pour le 1.3
+                Cellules[i][colonne].recupererDesintegrateur();
+                //il faut augmenter le nbde desintegrateurs du joueur
             }
             return true;
         }
@@ -237,6 +239,9 @@ public class Grille {
     
     public boolean placerDesintegrateur(int i,int j){
         return Cellules[i][j].placerDesintegrateur();
+    }
+    public boolean presenceDesintegrateur(int i,int j){
+        return Cellules[i][j].presenceDesintegrateur();
     }
     
     public boolean supprimerJeton(int i,int j){
