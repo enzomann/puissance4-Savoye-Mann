@@ -107,6 +107,7 @@ public class Partie {
         else {
             joueurCourant=ListeJoueurs[1];
         }
+        
         while (Grillejeu.etreGagnantePourJoueur(ListeJoueurs[0])==false && Grillejeu.etreGagnantePourJoueur(ListeJoueurs[1])==false && ListeJoueurs[1].nombreJetons_restants!=0 && Grillejeu.etreRemplie()==false){// tant que aucun des joueurs n'a gagne ou que le joueur qui a commence en deuxieme a encore des jetons ou que la grille n'est pas rempli on reste dans la boucle
             Scanner sc;
             int choix;
