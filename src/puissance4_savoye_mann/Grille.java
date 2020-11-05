@@ -38,6 +38,8 @@ public class Grille {
             return true;
         }
     }
+    
+
     public boolean etreRemplie(){
         for (int j=0; j<7; j++){
             for (int i=0; i<6;i++){ 
@@ -139,6 +141,9 @@ public class Grille {
             }
         }
         // verifions maintenant les diagonales
+        
+        // BD : grosse partie a reprendre, plus simplement 
+        
         int cpt3;
         int l;// (l pour ligne) va permettre de prendre la valeur de i, et l'utiliser dans les boucles sans changer i
         int c;// (c pour colonne) va permettre de prendre la valeur de j l'utiliser dans les boucles sans changer j
@@ -153,6 +158,8 @@ public class Grille {
                     while ( l<(i+2) || c<(j+2)){// on teste deux jetons en dessous a droites de celui de depart
                         l++;
                         c++;
+                        // BD: ta méthode de vérif des diagonales n'est pas OK
+                        //  ce serait déja plutot l < i-2 , sinon l va déborder. et pareil pour c < j+2 qui devrait etre c - 2 
                         if (lireCouleurDuJeton(l,c).equals(joueur.Couleur)){
                             cpt3++;
                         }    
@@ -210,6 +217,9 @@ public class Grille {
             }
         }
     }
+    
+    // BD : méthode OK. Cependant, il sufit juste de regardder que la cellule la plus en haut est remplie.
+    // si oui, du fait de la gravité, tous les jetons en dessous sont présents 
     public boolean colonneRemplie(int j){// j'ai rajouté une entrée car il faut bien selectionne la colonne a tester
         for (int i=0; i<6;i++){
             if(Cellules[i][j].jetonCourant==null){
