@@ -19,7 +19,7 @@ public class Grille {
             }
         }
     }
-    public boolean ajouterJetonDansColonne(Jeton jeton, int colonne){
+    public boolean ajouterJetonDansColonne(Jeton jeton, int colonne, Joueur joueurcourant){// j'ai rajouté une entree de type joueur pour pouvoir incrementer son nombre de desintegrateur.
         int i=0;
         while (i<6 && Cellules[i][colonne].jetonCourant==null){ 
             i++; // i augmente de 1 si la cellule est vide cela signifie que l'on descend de 1 dans la colonne 
@@ -35,7 +35,7 @@ public class Grille {
             }
             if (presenceDesintegrateur(i,colonne)){// pour le 1.3
                 Cellules[i][colonne].recupererDesintegrateur();
-                //il faut augmenter le nbde desintegrateurs du joueur
+                joueurcourant.nombreDesintegrateurs++;// si il y a presence d'un desintegrateur on le supprime avec recupererdesintegrateur puis on incremente son nombre de desintegrateur qu'il a en sa possession.
             }
             return true;
         }

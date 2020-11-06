@@ -108,7 +108,7 @@ public class Partie {
             joueurCourant=ListeJoueurs[1];
         }
         
-        while (Grillejeu.etreGagnantePourJoueur(ListeJoueurs[0])==false && Grillejeu.etreGagnantePourJoueur(ListeJoueurs[1])==false && ListeJoueurs[1].nombreJetons_restants!=0 && Grillejeu.etreRemplie()==false){// tant que aucun des joueurs n'a gagne ou que le joueur qui a commence en deuxieme a encore des jetons ou que la grille n'est pas rempli on reste dans la boucle
+        while (Grillejeu.etreGagnantePourJoueur(ListeJoueurs[0])==false && Grillejeu.etreGagnantePourJoueur(ListeJoueurs[1])==false){// tant que aucun des joueurs n'a gagne on reste dans la boucle, meme si la grille est remplie ou bien que les joueurs n'ont plus de jetons la partie continue car il y a la fonctionnalité recuperer un jeton.
             Scanner sc;
             int choix;
             do{
@@ -121,7 +121,7 @@ public class Partie {
                     choix=4;// choix prend une autre valeur pour refaire un tour de boucle
                 }
             } 
-            }while(choix!=1 || choix!=2 || choix!=3);
+            }while(choix!=1 && choix!=2 && choix!=3);
             
             switch(choix){
                 
@@ -133,7 +133,7 @@ public class Partie {
                     j=sc.nextInt();//
                     }while(Grillejeu.colonneRemplie(j));//on verifit si cette colonne est pleine et tant que la colonne choisit est pleine on demande a l'utilisateur de changer de colonne
                     // on ajoute ensuite le jeton dans la colonne
-                    Grillejeu.ajouterJetonDansColonne(joueurCourant.recupererJeton(), j);
+                    Grillejeu.ajouterJetonDansColonne(joueurCourant.recupererJeton(), j,joueurCourant);
                     break;
                 
                 case 2 :
@@ -153,6 +153,22 @@ public class Partie {
                     break;
                 
                 case 3 :
+                    int cd;//pour referencer la colonne
+                    int ld;//pour referencer la ligne
+                
+                    sc = new Scanner(System.in);
+                    System.out.println("tapez la ligne du jeton que vous voulez désintégrer la premiere ligne est à 0, et la derniere est 5");
+                    ld=sc.nextInt();// on recupere la ligne
+                
+                    sc = new Scanner(System.in);
+                    System.out.println("tapez la colonne du jeton que vous voulez désintégrer la premiere colonne est à 0, et la derniere est 6");
+                    cd=sc.nextInt();// on recupere la colonne
+                    
+                    Grillejeu.supprimerJeton(ld, cd);// on supprime le jeton
+                    Grillejeu.tasserGrille(cd);// on tasse la grille
+                    if (Grillejeu.etreGagnantePourJoueur(ListeJoueurs[0]) && Grillejeu.etreGagnantePourJoueur(ListeJoueurs[1]) ){
+                        System.out.println(joueurCourant.Nom+" vous avez perdu car vous avez provoqué un alignement de 4 jetons pour vous ET votre adversaire");
+                    }
                     
                 
             }
@@ -165,6 +181,12 @@ public class Partie {
             }
             Grillejeu.afficherGrilleSurConsole();// on affiche maintenant la grille 
             
+        }
+        if(Grillejeu.etreGagnantePourJoueur(ListeJoueurs[0])){
+            System.out.println(ListeJoueurs[0].Nom+"vous avez gagné!!!");
+        }
+        if(Grillejeu.etreGagnantePourJoueur(ListeJoueurs[1])){
+            System.out.println(ListeJoueurs[1].Nom+"vous avez gagné!!!");
         }
         
         
