@@ -24,7 +24,7 @@ public class Partie {
             ListeJoueurs[1].Couleur="jaune";// on attribue la couleur restante
         }
         else {
-            ListeJoueurs[0].Couleur="rouge";
+            ListeJoueurs[1].Couleur="rouge";
         }
     }
     
@@ -103,11 +103,13 @@ public class Partie {
         String [] ListeCouleur={"rouge","jaune"};// on cree un tableau contenant les couleurs
         if (ListeJoueurs[0].Couleur.equals(ListeCouleur[i])){
             joueurCourant=ListeJoueurs[0];
+            System.out.println(ListeJoueurs[0].Nom+" a vous de commencer"+" vous etes les "+ListeCouleur[i]);
         }
         else {
             joueurCourant=ListeJoueurs[1];
+            System.out.println(ListeJoueurs[1].Nom+" a vous de commencer"+" vous etes les "+ListeCouleur[i]);
         }
-        
+        Grillejeu.afficherGrilleSurConsole();
         while (Grillejeu.etreGagnantePourJoueur(ListeJoueurs[0])==false && Grillejeu.etreGagnantePourJoueur(ListeJoueurs[1])==false){// tant que aucun des joueurs n'a gagne on reste dans la boucle, meme si la grille est remplie ou bien que les joueurs n'ont plus de jetons la partie continue car il y a la fonctionnalité recuperer un jeton.
             Scanner sc;
             int choix;
@@ -129,8 +131,9 @@ public class Partie {
                     int j;
                     do {
                     sc = new Scanner(System.in);
-                    System.out.println("tapez le numero de la  colonne que vous voulez choisir sachant que la colonne de gauche est 0");
-                    j=sc.nextInt();//
+                    System.out.println("tapez le numero de la  colonne que vous voulez choisir entre 1 et 7");
+                    j=sc.nextInt();
+                    j--;// le tableau commence a 0 et non 1 
                     }while(Grillejeu.colonneRemplie(j));//on verifit si cette colonne est pleine et tant que la colonne choisit est pleine on demande a l'utilisateur de changer de colonne
                     // on ajoute ensuite le jeton dans la colonne
                     Grillejeu.ajouterJetonDansColonne(joueurCourant.recupererJeton(), j,joueurCourant);
@@ -141,14 +144,15 @@ public class Partie {
                     int l;//pour referencer la ligne
                 
                     sc = new Scanner(System.in);
-                    System.out.println("tapez la ligne du jeton que vous voulez récupérer la premiere ligne est à 0, et la derniere est 5");
+                    System.out.println("tapez la ligne du jeton que vous voulez récupérer entre 1 et 6");
                     l=sc.nextInt();// on recupere la ligne
-                
+                    l--;
                     sc = new Scanner(System.in);
-                    System.out.println("tapez la colonne du jeton que vous voulez récupérer la premiere colonne est à 0, et la derniere est 6");
+                    System.out.println("tapez la colonne du jeton que vous voulez récupérer la premiere colonne entre 1 et 7");
                     c=sc.nextInt();// on recupere la colonne
-                    
-                    Grillejeu.recupererJeton(l,c);// on recupere 
+                    c--;
+                    Grillejeu.supprimerJeton(l,c);// on supprime le jeton
+                    joueurCourant.nombreJetons_restants++;// on lui rajoute son jeton
                     Grillejeu.tasserGrille(c);// on oublie pas de tasser la grille
                     break;
                 
@@ -157,13 +161,13 @@ public class Partie {
                     int ld;//pour referencer la ligne
                 
                     sc = new Scanner(System.in);
-                    System.out.println("tapez la ligne du jeton que vous voulez désintégrer la premiere ligne est à 0, et la derniere est 5");
+                    System.out.println("tapez la ligne du jeton que vous voulez désintégrer la premiere ligne entre 1 et 6");
                     ld=sc.nextInt();// on recupere la ligne
-                
+                    ld--;
                     sc = new Scanner(System.in);
-                    System.out.println("tapez la colonne du jeton que vous voulez désintégrer la premiere colonne est à 0, et la derniere est 6");
+                    System.out.println("tapez la colonne du jeton que vous voulez désintégrer la premiere colonne entre 1 et 7");
                     cd=sc.nextInt();// on recupere la colonne
-                    
+                    cd--;
                     Grillejeu.supprimerJeton(ld, cd);// on supprime le jeton
                     Grillejeu.tasserGrille(cd);// on tasse la grille
                     if (Grillejeu.etreGagnantePourJoueur(ListeJoueurs[0]) && Grillejeu.etreGagnantePourJoueur(ListeJoueurs[1]) ){
@@ -183,10 +187,10 @@ public class Partie {
             
         }
         if(Grillejeu.etreGagnantePourJoueur(ListeJoueurs[0])){
-            System.out.println(ListeJoueurs[0].Nom+"vous avez gagné!!!");
+            System.out.println(ListeJoueurs[0].Nom+" vous avez gagné !!!");
         }
         if(Grillejeu.etreGagnantePourJoueur(ListeJoueurs[1])){
-            System.out.println(ListeJoueurs[1].Nom+"vous avez gagné!!!");
+            System.out.println(ListeJoueurs[1].Nom+" vous avez gagné !!!");
         }
         
         

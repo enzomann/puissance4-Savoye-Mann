@@ -66,14 +66,19 @@ public class Grille {
             System.out.println();
             for (int j=0; j<7; j++){ 
                 if (Cellules[i][j].jetonCourant!=null){
-                    System.out.print("j ");
+                    if(Cellules[i][j].jetonCourant.Couleur=="rouge"){
+                        System.out.print("R ");
+                    }
+                    else{
+                        System.out.print("J ");
+                    }
                 }
                 else {
                     if(Cellules[i][j].trouNoir){
-                        System.out.print("tn ");// dans le cas ou il y a un trou noir ou un trou noir et un desintegrateurdans la cellule on affiche tn
+                        System.out.print("T ");// dans le cas ou il y a un trou noir ou un trou noir et un desintegrateurdans la cellule on affiche T
                     }
                     else if(Cellules[i][j].desintegrateur && Cellules[i][j].trouNoir==false){
-                        System.out.print("d ");// dans le cas ou il y a un desintegrateur sans trou noir on affiche d
+                        System.out.print("D ");// dans le cas ou il y a un desintegrateur sans trou noir on affiche D
                     }
                     else {
                         System.out.print("  ");// dans le cas ou la case est vide on affiche rien (un espace)
@@ -81,6 +86,7 @@ public class Grille {
                 }
             }
         }
+        System.out.println();// on passe a la ligne a la fin de l'affichege de la grille
     }
     public boolean celluleOccupee(int l, int c){
         if (Cellules[l][c].jetonCourant==null){
@@ -102,106 +108,35 @@ public class Grille {
         int cpt;// compte le nombre de  jeton de la couleur du joueur    
         int cpt2;// compte le nombre de  jeton de la couleur du joueur dans une autre boucle plus affiné
         // verifions d'abord par colonne
-        for (int j=0; j<7; j++){
-            cpt=0;// on initialise le compteur à 0 sur chaque colonne
-            for (int i=0; i<6;i++){ 
-             
-                if (lireCouleurDuJeton(i,j).equals(joueur.Couleur)){
-                    cpt++;
-                    if (cpt>=4){// des que le compteur depasse 4 on rentre dans le if
-                        cpt2=0;// on initialise le deuxieme compteur
-                        for (; i>(i-4);i--){// on va verifier si la case actuelle et les 3 cases d'au dessus sont de la couleur du joueur
-                            if (lireCouleurDuJeton(i,j).equals(joueur.Couleur)){
-                                cpt2++;
-                            }
-                            if (cpt2==4){
-                                return true;// retourne vraie si le joueur a aligné 4 jetons sur une colonne
-                            }
-                        }
-                    }
+        for (int j=0; j<4; j++){
+            for (int i=0; i<6;i++){ // on se place dans les cellules formant un rectangle a gauche 
+                if(joueur.Couleur.equals(lireCouleurDuJeton(i,j)) && joueur.Couleur.equals(lireCouleurDuJeton(i,j+1)) && joueur.Couleur.equals(lireCouleurDuJeton(i,j+2)) && joueur.Couleur.equals(lireCouleurDuJeton(i,j+3))){// 
+                    return true;
                 }
             }
         }
         // verifions maintenant les lignes (on fait pareil que pour les colonnes, on intervertit seulement l'ordre des boucles i et j)
-        for (int i=0; i<6;i++){
-            cpt=0;// on initialise le compteur à 0 sur chaque colonne
-            for (int j=0; j<7; j++){ 
-                if (lireCouleurDuJeton(i,j).equals(joueur.Couleur)){
-                    cpt++;
-                    if (cpt>=4){// des que le compteur depasse 4 on rentre dans le if
-                        cpt2=0;// on initialise le deuxieme compteur
-                        for (; j>(i-4);j--){// on va verifier si la case actuelle et les 3 cases d'au dessus sont de la couleur du joueur
-                            if (lireCouleurDuJeton(i,j).equals(joueur.Couleur)){
-                                cpt2++;
-                            }
-                            if (cpt2==4){
-                                return true;// retourne vraie si le joueur a aligné 4 jetons sur une colonne
-                            }
-                        }
-                    }
+        for (int j=0; j<7; j++){
+            for (int i=0; i<3;i++){ // on se place dans les cellules formant un petit rectangle en haut a gauche 
+                if(joueur.Couleur.equals(lireCouleurDuJeton(i,j)) && joueur.Couleur.equals(lireCouleurDuJeton(i+1,j)) && joueur.Couleur.equals(lireCouleurDuJeton(i+2,j)) && joueur.Couleur.equals(lireCouleurDuJeton(i+3,j))){// on verifie les diagonales descendantes
+                    return true;
                 }
             }
         }
         // verifions maintenant les diagonales
         
-        // BD : grosse partie a reprendre, plus simplement 
         
-        int cpt3;
-        int l;// (l pour ligne) va permettre de prendre la valeur de i, et l'utiliser dans les boucles sans changer i
-        int c;// (c pour colonne) va permettre de prendre la valeur de j l'utiliser dans les boucles sans changer j
-        for (int j=0; j<7; j++){
-            for (int i=0; i<6;i++){ 
-                cpt3=0;
-                if (lireCouleurDuJeton(i,j).equals(joueur.Couleur)){// pour chaque jeton de la couleur du joueur nous allons tester 3 jetons autour de celui ci dans deux directions differentes
-                    cpt3++;
-                    l=i;
-                    c=j;        
-                    
-                    while ( l<(i+2) || c<(j+2)){// on teste deux jetons en dessous a droites de celui de depart
-                        l++;
-                        c++;
-                        // BD: ta méthode de vérif des diagonales n'est pas OK
-                        //  ce serait déja plutot l < i-2 , sinon l va déborder. et pareil pour c < j+2 qui devrait etre c - 2 
-                        if (lireCouleurDuJeton(l,c).equals(joueur.Couleur)){
-                            cpt3++;
-                        }    
-                    }
-                    l=i;// on se replace au niveau du jeton de depart
-                    c=j;
-                    while ( l>(i-1) || c>(j-1)){// on teste le jeton au dessus a gauche 
-                        l--;
-                        c--;
-                        if (lireCouleurDuJeton(l,c).equals(joueur.Couleur)){
-                            cpt3++;
-                        }    
-                    }
-                    if (cpt3==4){// actuellement on a teste les trois jetons autour de celui de depart sur la diagonales descendant de gauche vers droite
-                        return true;// si ces trois jetons autours de celui de depart sont jaune alors notre compteur vaut 4 
-                    }
-                    // on va maintenant regarder la diagonale montant de gauche vers droite
-                    // similaire a l'autre diagonale 
-                    cpt3=1;
-                    l=i;
-                    c=j;
-                    while ( l>(i-2) || c<(j+2)){
-                        l--;
-                        c++;
-                        if (lireCouleurDuJeton(l,c).equals(joueur.Couleur)){
-                            cpt3++;
-                        }    
-                    }
-                    l=i;
-                    c=j;
-                    while ( l<(i+1) || c>(j-1)){
-                        l++;
-                        c--;
-                        if (lireCouleurDuJeton(l,c).equals(joueur.Couleur)){
-                            cpt3++;
-                        }    
-                    }
-                    if (cpt3==4){
-                        return true;
-                    }
+        for (int j=0; j<4; j++){
+            for (int i=0; i<3;i++){ // on se place dans les cellules formant un petit rectangle en haut a gauche 
+                if(joueur.Couleur.equals(lireCouleurDuJeton(i,j)) && joueur.Couleur.equals(lireCouleurDuJeton(i+1,j+1)) && joueur.Couleur.equals(lireCouleurDuJeton(i+2,j+2)) && joueur.Couleur.equals(lireCouleurDuJeton(i+3,j+3))){// on verifie les diagonales descendantes
+                    return true;
+                }
+            }
+        }
+        for (int j=0; j<4; j++){
+            for (int i=3; i<6;i++){ // on se place dans un rectangle en bas a gauche de la grille
+                if(joueur.Couleur.equals(lireCouleurDuJeton(i,j)) && joueur.Couleur.equals(lireCouleurDuJeton(i-1,j+1)) && joueur.Couleur.equals(lireCouleurDuJeton(i-2,j+2)) && joueur.Couleur.equals(lireCouleurDuJeton(i-3,j+3))){// on verifie les diagonales montantes
+                    return true;
                 }
             }
         }
@@ -213,7 +148,8 @@ public class Grille {
             if (Cellules[i][j].jetonCourant==null && Cellules[i-1][j].jetonCourant!=null){//si une case est vide et que celle du dessus ne l'est pas pas on rentre dans la boucle for
                 for (; i>0;i--){// cette boucle permet de baisser chaque jeton d'une case
                     if (Cellules[i-1][j].jetonCourant!=null){// on verifie bien que la case du dessus est une couleur sinon ce la ne sert a rien de faire l'instruction suivante
-                        Cellules[i][j].jetonCourant.Couleur=Cellules[i-1][j].jetonCourant.Couleur;
+                        Cellules[i][j].jetonCourant=Cellules[i-1][j].jetonCourant;// on affecte le jeton courant a la case d'en dessous
+                        Cellules[i-1][j].supprimerJeton();// maintenant que ce jeton est present dans la cellule d'en dessous on peut le supprimer
                     }
                 }
             }
